@@ -5,7 +5,7 @@ import NIMASHA from "./nimasha.jpeg"
 import KAVEESH from "./kaveesh.jpeg" 
 
 
-export const teamMembers = [
+const teamMembers = [
   {
     name: "Nimasha Jayakody",
     role: "Vision & Strategy Lead",

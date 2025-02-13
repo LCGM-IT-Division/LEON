@@ -3,7 +3,7 @@ import { Github, Linkedin, Mail, Facebook } from "lucide-react"
 import NIMASHA from "./nimasha.jpeg"
 import KAVEESH from "./kaveesh.jpeg"
 
-export const teamMembers = [
+const teamMembers = [
   {
     name: "Leo Nimasha Jayakody",
     role: "Vision & Strategy Lead",
