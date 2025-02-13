@@ -24,7 +24,7 @@ export default function Header() {
   ]
 
   return (
-    <div className="border-b">
+    <div className="border-b sticky top-0 bg-white z-50">
       <div className="flex h-16 items-center px-4 container mx-auto">
         <Link href="/" className="mr-6">
           <Image src={LOGO || "/placeholder.svg"} alt="Logo" width={70} height={70} />
