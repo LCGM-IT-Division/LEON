@@ -264,15 +264,18 @@ export function AddBusinessForm() {
     <Form {...form}>
       <form className="space-y-8">
         <Card className="w-full max-w-4xl mx-auto shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-[#8E2157] to-[#58142F] text-white">
-            <CardTitle className="text-3xl font-bold">LEON Entrepreneur Registration</CardTitle>
-            <CardDescription className="text-gray-200 mt-2">
-              Join the Leo Entrepreneurs and Opportunities Network! Share your business details with us to help us understand your needs better. Please ensure all fields are completed and your contact information is accurate. After submission, our team will reach out to verify your details, and your information will appear on the site within 2-3 business days.
+          <CardHeader className="bg-gradient-to-r from-[#8E2157] to-[#58142F] text-white p-6">
+            <CardTitle className="text-2xl md:text-3xl font-bold">LEON Entrepreneur Registration</CardTitle>
+            <CardDescription className="text-gray-200 mt-2 text-sm md:text-base">
+              Join the Leo Entrepreneurs and Opportunities Network! Share your business details with us to help us
+              understand your needs better. Please ensure all fields are completed and your contact information is
+              accurate. After submission, our team will reach out to verify your details, and your information will
+              appear on the site within 2-3 business days.
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <Tabs value={steps[currentStep].title.toLowerCase()} className="w-full">
-              <TabsList className="grid w-full grid-cols-5 mb-8">
+              <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-6 md:mb-8 overflow-x-auto">
                 {steps.map((step, index) => (
                   <TabsTrigger
                     key={step.title}
@@ -281,6 +284,7 @@ export function AddBusinessForm() {
                     className={cn(
                       "data-[state=active]:bg-[#8E2157] data-[state=active]:text-white",
                       "transition-all duration-200 ease-in-out",
+                      "text-xs md:text-sm py-2 px-1 md:px-2",
                     )}
                   >
                     {step.title}
@@ -288,8 +292,10 @@ export function AddBusinessForm() {
                 ))}
               </TabsList>
               {steps.map((step, index) => (
-                <TabsContent key={step.title} value={step.title.toLowerCase()} className="space-y-6">
-                  <h2 className="text-2xl font-bold text-[#8E2157] mb-6">{step.title} Information</h2>
+                <TabsContent key={step.title} value={step.title.toLowerCase()} className="space-y-4 md:space-y-6">
+                  <h2 className="text-xl md:text-2xl font-bold text-[#8E2157] mb-4 md:mb-6">
+                    {step.title} Information
+                  </h2>
                   {step.fields.map((field) => (
                     <FormField
                       key={field}
@@ -297,7 +303,7 @@ export function AddBusinessForm() {
                       name={field as any}
                       render={({ field: fieldProps }) => (
                         <FormItem className="mb-4">
-                          <FormLabel className="text-lg font-semibold">{getFieldLabel(field)}</FormLabel>
+                          <FormLabel className="text-base md:text-lg font-semibold">{getFieldLabel(field)}</FormLabel>
                           <FormControl>{renderFormControl(field, fieldProps)}</FormControl>
                         </FormItem>
                       )}
@@ -305,18 +311,18 @@ export function AddBusinessForm() {
                   ))}
                   {index === 1 && (
                     <>
-                      <div className="space-y-4 mt-8">
-                        <h3 className="text-xl font-semibold text-[#8E2157]">Business Images</h3>
+                      <div className="space-y-4 mt-6 md:mt-8">
+                        <h3 className="text-lg md:text-xl font-semibold text-[#8E2157]">Business Images</h3>
                         <p className="text-sm text-gray-600 mb-2">
                           These images will appear in the gallery section of your business page.
                         </p>
                         <div className="flex items-center justify-center w-full">
                           <label
                             htmlFor="dropzone-file"
-                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                            className="flex flex-col items-center justify-center w-full h-48 md:h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
                           >
                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                              <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                              <Upload className="w-8 h-8 md:w-10 md:h-10 mb-3 text-gray-400" />
                               <p className="mb-2 text-sm text-gray-500">
                                 <span className="font-semibold">Click to upload</span> or drag and drop
                               </p>
@@ -333,7 +339,7 @@ export function AddBusinessForm() {
                           </label>
                         </div>
                         {previewUrls.length > 0 && (
-                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 mt-4">
                             {previewUrls.map((url, index) => (
                               <div key={index} className="relative group">
                                 <Image
@@ -357,15 +363,15 @@ export function AddBusinessForm() {
                           </div>
                         )}
                       </div>
-                      <div className="space-y-4 mt-8">
-                        <h3 className="text-xl font-semibold text-[#8E2157]">Cover Image</h3>
+                      <div className="space-y-4 mt-6 md:mt-8">
+                        <h3 className="text-lg md:text-xl font-semibold text-[#8E2157]">Cover Image</h3>
                         <p className="text-sm text-gray-600 mb-2">
                           This image will appear at the top of your business page and in search results.
                         </p>
                         <div className="flex items-center justify-center w-full">
                           <label
                             htmlFor="cover-image-upload"
-                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                            className="flex flex-col items-center justify-center w-full h-48 md:h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
                           >
                             {coverImagePreview ? (
                               <Image
@@ -378,7 +384,7 @@ export function AddBusinessForm() {
                             ) : (
                               <>
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                  <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                                  <Upload className="w-8 h-8 md:w-10 md:h-10 mb-3 text-gray-400" />
                                   <p className="mb-2 text-sm text-gray-500">
                                     <span className="font-semibold">Click to upload</span> or drag and drop
                                   </p>
@@ -401,15 +407,15 @@ export function AddBusinessForm() {
                           )}
                         </div>
                       </div>
-                      <div className="space-y-4 mt-8">
-                        <h3 className="text-xl font-semibold text-[#8E2157]">Photo of You</h3>
+                      <div className="space-y-4 mt-6 md:mt-8">
+                        <h3 className="text-lg md:text-xl font-semibold text-[#8E2157]">Photo of You</h3>
                         <p className="text-sm text-gray-600 mb-2">
                           This photo will appear next to your name as the business owner.
                         </p>
                         <div className="flex items-center justify-center w-full">
                           <label
                             htmlFor="entrepreneur-photo-upload"
-                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                            className="flex flex-col items-center justify-center w-full h-48 md:h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
                           >
                             {entrepreneurPhotoPreview ? (
                               <Image
@@ -422,7 +428,7 @@ export function AddBusinessForm() {
                             ) : (
                               <>
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                  <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                                  <Upload className="w-8 h-8 md:w-10 md:h-10 mb-3 text-gray-400" />
                                   <p className="mb-2 text-sm text-gray-500">
                                     <span className="font-semibold">Click to upload</span> or drag and drop
                                   </p>
@@ -451,14 +457,20 @@ export function AddBusinessForm() {
               ))}
             </Tabs>
           </CardContent>
-          <CardFooter className="flex justify-between bg-gray-50 p-6">
-            <Button type="button" onClick={prevStep} disabled={currentStep === 0} variant="outline" className="px-6">
+          <CardFooter className="flex flex-col sm:flex-row justify-between bg-gray-50 p-4 md:p-6 space-y-4 sm:space-y-0">
+            <Button
+              type="button"
+              onClick={prevStep}
+              disabled={currentStep === 0}
+              variant="outline"
+              className="w-full sm:w-auto px-6"
+            >
               Previous
             </Button>
             <Button
               type="button"
               onClick={currentStep < steps.length - 1 ? nextStep : form.handleSubmit(onSubmit)}
-              className="bg-[#8E2157] hover:bg-[#58142F] px-6"
+              className="w-full sm:w-auto bg-[#8E2157] hover:bg-[#58142F] px-6"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
