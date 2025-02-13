@@ -97,7 +97,7 @@ export function Footer() {
           <p>
             &copy; {new Date().getFullYear()} LEON - Leo Entrepreneurs & Opportunities Network. All rights reserved.
           </p>
-          <p>Initiated by the Leos of Leo Club of Gampaha Metro IT Division</p>
+          <p>Initiated by the IT Division of Leo Club of Gampaha Metro</p>
         </div>
       </div>
     </footer>
