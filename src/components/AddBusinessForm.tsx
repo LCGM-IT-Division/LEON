@@ -54,6 +54,9 @@ type FormValues = {
   images: string[]
   coverImage: string | null
   myLeoLciNumber: string
+  businessTagline: string
+  leoImage: File | null
+  entrepreneurPhoto: File | null
 }
 
 export function AddBusinessForm() {
@@ -63,6 +66,8 @@ export function AddBusinessForm() {
   const [coverImagePreview, setCoverImagePreview] = useState<string | null>(null)
   const [currentStep, setCurrentStep] = useState(0)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [entrepreneurPhoto, setEntrepreneurPhoto] = useState<File | null>(null)
+  const [entrepreneurPhotoPreview, setEntrepreneurPhotoPreview] = useState<string | null>(null)
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -90,6 +95,9 @@ export function AddBusinessForm() {
       images: [],
       coverImage: null,
       myLeoLciNumber: "",
+      businessTagline: "",
+      leoImage: null,
+      entrepreneurPhoto: null,
     },
   })
 
@@ -130,11 +138,31 @@ export function AddBusinessForm() {
           ).url
         : null
 
+      const entrepreneurPhotoUrl = entrepreneurPhoto
+        ? (
+            await (
+              await fetch("/api/uploadToS3", {
+                method: "POST",
+                body: (() => {
+                  const formData = new FormData()
+                  formData.append("file", entrepreneurPhoto)
+                  return formData
+                })(),
+              })
+            ).json()
+          ).url
+        : null
+
       // Save form data to Google Sheets
       const response = await fetch("/api/saveToGoogleSheets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, images: uploadedImages, coverImage: coverImageUrl }),
+        body: JSON.stringify({
+          ...values,
+          images: uploadedImages,
+          coverImage: coverImageUrl,
+          entrepreneurPhoto: entrepreneurPhotoUrl,
+        }),
       })
 
       if (!response.ok) {
@@ -150,6 +178,8 @@ export function AddBusinessForm() {
       setPreviewUrls([])
       setCoverImage(null)
       setCoverImagePreview(null)
+      setEntrepreneurPhoto(null)
+      setEntrepreneurPhotoPreview(null)
       setCurrentStep(0)
     } catch (error) {
       console.error("Error submitting form:", error)
@@ -186,12 +216,25 @@ export function AddBusinessForm() {
     setCoverImagePreview(null)
   }
 
+  const handleEntrepreneurPhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setEntrepreneurPhoto(e.target.files[0])
+      setEntrepreneurPhotoPreview(URL.createObjectURL(e.target.files[0]))
+    }
+  }
+
+  const removeEntrepreneurPhoto = () => {
+    setEntrepreneurPhoto(null)
+    setEntrepreneurPhotoPreview(null)
+  }
+
   const steps = [
     { title: "Personal", fields: ["fullName", "contactNumber", "email", "residentialAddress", "leoLionStatus"] },
     {
       title: "Business",
       fields: [
         "businessName",
+        "businessTagline",
         "businessType",
         "businessDescription",
         "businessAddress",
@@ -207,12 +250,11 @@ export function AddBusinessForm() {
   ]
 
   const nextStep = async () => {
-  const isStepValid = await form.trigger(steps[currentStep].fields as any[]);  // Wait for validation
-  if (isStepValid) {
-    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+    const isStepValid = await form.trigger(steps[currentStep].fields as any[]) // Wait for validation
+    if (isStepValid) {
+      setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1))
+    }
   }
-  };
-
 
   const prevStep = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 0))
@@ -225,7 +267,7 @@ export function AddBusinessForm() {
           <CardHeader className="bg-gradient-to-r from-[#8E2157] to-[#58142F] text-white">
             <CardTitle className="text-3xl font-bold">LEON Entrepreneur Registration</CardTitle>
             <CardDescription className="text-gray-200 mt-2">
-              Join the Leo Entrepreneurs and Opportunities Network. Help us understand your business needs better.
+              Join the Leo Entrepreneurs and Opportunities Network! Share your business details with us to help us understand your needs better. Please ensure all fields are completed and your contact information is accurate. After submission, our team will reach out to verify your details, and your information will appear on the site within 2-3 business days.
             </CardDescription>
           </CardHeader>
           <CardContent className="p-6">
@@ -261,10 +303,13 @@ export function AddBusinessForm() {
                       )}
                     />
                   ))}
-                  {index === 1 && ( // Add image upload in the Business step
+                  {index === 1 && (
                     <>
                       <div className="space-y-4 mt-8">
                         <h3 className="text-xl font-semibold text-[#8E2157]">Business Images</h3>
+                        <p className="text-sm text-gray-600 mb-2">
+                          These images will appear in the gallery section of your business page.
+                        </p>
                         <div className="flex items-center justify-center w-full">
                           <label
                             htmlFor="dropzone-file"
@@ -314,6 +359,9 @@ export function AddBusinessForm() {
                       </div>
                       <div className="space-y-4 mt-8">
                         <h3 className="text-xl font-semibold text-[#8E2157]">Cover Image</h3>
+                        <p className="text-sm text-gray-600 mb-2">
+                          This image will appear at the top of your business page and in search results.
+                        </p>
                         <div className="flex items-center justify-center w-full">
                           <label
                             htmlFor="cover-image-upload"
@@ -348,6 +396,50 @@ export function AddBusinessForm() {
                           </label>
                           {coverImagePreview && (
                             <Button type="button" variant="destructive" size="icon" onClick={removeCoverImage}>
+                              <X className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                      <div className="space-y-4 mt-8">
+                        <h3 className="text-xl font-semibold text-[#8E2157]">Photo of You</h3>
+                        <p className="text-sm text-gray-600 mb-2">
+                          This photo will appear next to your name as the business owner.
+                        </p>
+                        <div className="flex items-center justify-center w-full">
+                          <label
+                            htmlFor="entrepreneur-photo-upload"
+                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                          >
+                            {entrepreneurPhotoPreview ? (
+                              <Image
+                                src={entrepreneurPhotoPreview || "/placeholder.svg"}
+                                alt="Entrepreneur Photo Preview"
+                                width={200}
+                                height={200}
+                                className="object-cover rounded-lg"
+                              />
+                            ) : (
+                              <>
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                  <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                                  <p className="mb-2 text-sm text-gray-500">
+                                    <span className="font-semibold">Click to upload</span> or drag and drop
+                                  </p>
+                                  <p className="text-xs text-gray-500">PNG, JPG or WebP (MAX. 5MB)</p>
+                                </div>
+                              </>
+                            )}
+                            <Input
+                              id="entrepreneur-photo-upload"
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={handleEntrepreneurPhotoUpload}
+                            />
+                          </label>
+                          {entrepreneurPhotoPreview && (
+                            <Button type="button" variant="destructive" size="icon" onClick={removeEntrepreneurPhoto}>
                               <X className="h-4 w-4" />
                             </Button>
                           )}
@@ -413,6 +505,7 @@ function getFieldLabel(field: string): string {
     businessAlignment:
       "How does your business align with the core values of leadership and service promoted by the Leo and Lion movement?",
     myLeoLciNumber: "MyLeo/MyLCI Number",
+    businessTagline: "Business Tagline",
   }
   return labels[field] || field
 }
@@ -494,6 +587,8 @@ function renderFormControl(field: string, fieldProps: any) {
       return <Input type="url" placeholder="https://" {...fieldProps} />
     case "myLeoLciNumber":
       return <Input placeholder="Enter your MyLeo/MyLCI number" {...fieldProps} />
+    case "businessTagline":
+      return <Input placeholder="Enter your business tagline" {...fieldProps} />
     default:
       return <Input {...fieldProps} />
   }

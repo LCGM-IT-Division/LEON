@@ -4,23 +4,26 @@ import { Github, Linkedin, Mail, Facebook } from "lucide-react"
 import NIMASHA from "./nimasha.jpeg"
 import KAVEESH from "./kaveesh.jpeg" 
 
-const teamMembers = [
+
+export const teamMembers = [
   {
     name: "Nimasha Jayakody",
     role: "Vision & Strategy Lead",
     image: NIMASHA,
     bio: "The visionary behind LEON, shaping its purpose, strategy, and long-term impact for Leo & Lions entrepreneurs.",
-    linkedin: "https://linkedin.com/in/charlie",
-    email: "charlie@example.com",
+    linkedin: "https://www.linkedin.com/in/nimasha-jayakody-89a0ba243 ",
+    facebook: 'https://www.facebook.com/nimasha.jayakody',
+    email: "nimashajayakodyd@gmail.com"
   },
   {
     name: "Kaveesh Karunarathna",
     role: "Head of Development",
     image: KAVEESH,
-    bio: "Leads the development of the platform, ensuring LEON remains high-quality and future-ready for the community.",
-    github: "https://github.com/charlie",
-    linkedin: "https://linkedin.com/in/charlie",
-    email: "charlie@example.com",
+    bio: "Driving the full-stack development of LEON, ensuring a high-quality, scalable, and future-ready platform for the community.",
+    github: "https://github.com/kaveeshkarunarathna",
+    linkedin: "https://www.linkedin.com/in/kaveesh-karunarathna",
+    facebook: 'https://www.facebook.com/profile.php?id=100010818270217',
+    email: "kaveeshbc@gmail.com"
   },
 ]
 
