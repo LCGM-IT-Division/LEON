@@ -33,7 +33,20 @@ export default function BusinessesPage() {
     // The useEffect will handle the filtering
   }
 
-  const categories = Array.from(new Set(BUSINESS_LIST.map((business) => business.category)))
+  // const categories = Array.from(new Set(BUSINESS_LIST.map((business) => business.category)))
+
+  const categories = [
+  "Technology",
+  "Food & Beverage",
+  "Retail",
+  "Healthcare",
+  "Education",
+  "Finance",
+  "Real Estate",
+  "Manufacturing",
+  "Entertainment",
+  "Other",
+]
 
   return (
     <div className="container mx-auto px-4 py-8">
