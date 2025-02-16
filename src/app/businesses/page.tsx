@@ -45,6 +45,8 @@ export default function BusinessesPage() {
   "Real Estate",
   "Manufacturing",
   "Entertainment",
+  "Event management",
+  "Designing & Marketing",
   "Other",
 ]
 

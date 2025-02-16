@@ -26,6 +26,8 @@ const businessTypes = [
   "Real Estate",
   "Manufacturing",
   "Entertainment",
+  "Event management",
+  "Designing & Marketing",
   "Other",
 ]
 
